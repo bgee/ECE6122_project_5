@@ -53,6 +53,7 @@ class Vector
   bool   Empty() const;         // True if empty
   // Clear the vecor
   void   Clear();               // Remove all elements
+  T* Get_New_Block(size_t);
   // Define the iterator
   // Iterator initializers
   VectorIterator<T> Begin() const;       // Get an iterator to first element
