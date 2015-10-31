@@ -1,6 +1,6 @@
 // Implementation of the templated Vector class
 // ECE4893/8893 lab 3
-// YOUR NAME HERE
+// Bi Ge
 
 #include <iostream> // debugging
 #include "Vector.h"
@@ -57,7 +57,7 @@ Vector<T>::Vector(size_t n, const T& t)
   }
   count = n;
   reserved = n;
-  T::PrintCounts();
+  //T::PrintCounts();
 }
 #endif
 
@@ -90,14 +90,12 @@ void Vector<T>::Push_Back(const T& rhs)
 {
   // if have enough space for one extra object
   if (reserved - count >= 1){
-    cout << "enough space " << reserved << count <<endl;
     new (&elements[count]) T(rhs);
     count++;
   }
   // if not, need to find another space and copy over all the element
   // and push to the back
   else {
-    cout << "need to relocate " << reserved << count << endl;
     T* new_elements = Get_New_Block(count+1);
     T* temp = new (&new_elements[count]) T(rhs);
     if (count != 0){
@@ -113,7 +111,6 @@ void Vector<T>::Push_Back(const T& rhs)
 template <typename T>
 void Vector<T>::Reserve(size_t nReserved)
 {
-  cout << "begin of reserve" << endl;
   // if current reserved size is less than nReserved
   if (reserved < nReserved){
     if (count > 0){
@@ -122,7 +119,6 @@ void Vector<T>::Reserve(size_t nReserved)
     elements = Get_New_Block(nReserved);
     reserved = nReserved;
   }
-  cout << "end of reserve " <<reserved << endl;
 }
 
 template <typename T>
@@ -250,7 +246,6 @@ VectorIterator<T> Vector<T>::End() const
 template <typename T>
 void Vector<T>::Erase(const VectorIterator<T>& it)
 {
-  cout << "in erase" << endl;
   size_t erasePos = 0;
   for (VectorIterator<T> i = Begin(); i != it; i++){
     erasePos++;
@@ -262,34 +257,23 @@ void Vector<T>::Erase(const VectorIterator<T>& it)
   }
   // if non-end erasing, need to find new space
   else {
-    cout << "in else " << count << reserved << endl;
 
 
     // this shouldn't alter reserved, so get a space with size reserved
     T* new_elements = (T*) malloc(reserved * sizeof(T));
-    cout << "before for" << endl;
     for (size_t i = 0; i < erasePos; i++){
-      cout << "before new" << endl;
       new (&new_elements[i]) T(elements[i]);
-      cout << "after new " << endl;
       //elements[i].~T();
-      cout << "after destructor" << endl;
     }
-    cout << "after 1 for" << endl;
     for (size_t i = erasePos + 1; i < count; i++){
       new (&new_elements[i-1]) T(elements[i]);
       //elements[i].~T();
     }
-    cout << "before destructor" << endl;
     for (size_t i = 0; i < count; i++){
-      cout << elements[i] << endl;
       elements[i].~T();
       }
-    cout << "after destructor" << endl;
     //elements[erasePos].~T();
-    cout << "before free" << endl;
     free(elements);
-    cout << "after free" << endl;
     elements = new_elements;
     count--;
   }
@@ -300,7 +284,6 @@ void Vector<T>::Insert(const T& rhs, const VectorIterator<T>& it)
 {
   // shift everthing in Vector one element backwards, then insert
   // first need to see if theres enough space
-  cout << "r: " << reserved << " c: " << count << endl;
   if (reserved - count >= 1){
     count++;
   }
@@ -308,7 +291,6 @@ void Vector<T>::Insert(const T& rhs, const VectorIterator<T>& it)
     reserved = count + 1;
     count = reserved;
   }
-  cout << "r: " << reserved << " c: " << count << endl;
   T* new_elements = (T*) malloc(reserved * sizeof(T));
   size_t insertPos = 0;
   // copy everything before it
@@ -325,7 +307,6 @@ void Vector<T>::Insert(const T& rhs, const VectorIterator<T>& it)
     new (&new_elements[i+1]) T(elements[i]);
     elements[i].~T();
   }
-  //cout << new_elements[insertPos] << endl;
   free(elements);
   elements = new_elements;
 }
@@ -365,7 +346,6 @@ T& VectorIterator<T>::operator*() const
 template <typename T>
 void VectorIterator<T>::printCurrent()
 {
-  cout << current << endl;
   }*/
 
 // Prefix increment
